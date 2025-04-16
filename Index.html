@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Happy Birthday, My Wifiee, Madam Ji, My Blushy Tomato!</title> <!-- Google Fonts --> 
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&amp;family=Quicksand&amp;display=swap" rel="stylesheet"> 
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffe0ec, #d8eaff);
+      font-family: 'Quicksand', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+      text-align: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Envelope Animation */
+    .envelope-container {
+      position: relative;
+      width: 250px; /* Increased size */
+      height: 150px; /* Increased size */
+      margin: 20px auto;
+      cursor: pointer;
+    }
+
+    .envelope {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #ff6f91;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .flap {
+      position: absolute;
+      width: 0;
+      height: 0;
+      top: 0;
+      left: 0;
+      border-left: 125px solid transparent; /* Scaled for larger envelope */
+      border-right: 125px solid transparent; /* Scaled for larger envelope */
+      border-top: 75px solid #ff4d6d; /* Scaled for larger envelope */
+      transform-origin: top;
+      transition: transform 0.5s ease;
+      z-index: 2;
+    }
+
+    .envelope.open .flap {
+      transform: rotateX(180deg);
+    }
+
+    .card {
+      position: absolute;
+      width: 90%;
+      height: 80%;
+      top: 10%;
+      left: 5%;
+      background: #fff;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform: translateY(100%);
+      transition: transform 0.5s ease 0.5s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      opacity: 0;
+    }
+
+    .envelope.open .card {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .wish {
+      font-family: 'Great+Vibes', cursive;
+      font-size: 1.4em; /* Slightly larger for visibility */
+      color: #ff4d6d;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .main-content {
+      display: none;
+    }
+
+    .main-content.show {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3em;
+      color: #ff4d6d;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.8em;
+      color: #444;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .message {
+      margin: 20px;
+      font-size: 1.1em;
+      max-width: 90%;
+      color: #6a0572;
+      line-height: 1.6;
+      text-shadow: 0 0 5px rgba(255, 77, 109, 0.3);
+    }
+
+    .photo {
+      margin: 20px auto;
+      border-radius: 20px;
+      max-width: 90%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    button {
+      margin: 20px;
+      padding: 12px 25px;
+      font-size: 1em;
+      background-color: #ff4d6d;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #e33a57;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    /* Heart Animation */
+    .heart {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: #ff4d6d;
+      transform: rotate(45deg);
+      opacity: 0.5;
+      animation: float 6s infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: #ff4d6d;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -7.5px;
+      left: 0;
+    }
+
+    .heart::after {
+      top: 0;
+      left: -7.5px;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(45deg); opacity: 0.5; }
+      100% { transform: translateY(-100vh) rotate(45deg); opacity: 0; }
+    }
+
+    /* Line-by-Line Fade Animation */
+    .message-line {
+      opacity: 0;
+      animation: fadeInLine 1s ease-in-out forwards;
+    }
+
+    @keyframes fadeInLine {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Delay for each line */
+    .message-line:nth-child(1) { animation-delay: 0.5s; }
+    .message-line:nth-child(2) { animation-delay: 1.5s; }
+    .message-line:nth-child(3) { animation-delay: 2.5s; }
+    .message-line:nth-child(4) { animation-delay: 3.5s; }
+    .message-line:nth-child(5) { animation-delay: 4.5s; }
+
+    /* Responsive Design for Android */
+    @media (max-width: 600px) {
+      h1 { font-size: 2.2em; }
+      h2 { font-size: 1.5em; }
+      .message { font-size: 1em; }
+      .photo { max-width: 95%; }
+      button { padding: 10px 20px; font-size: 0.9em; }
+      .envelope-container { width: 200px; height: 120px; } /* Adjusted for mobile */
+      .flap { border-left: 100px solid transparent; border-right: 100px solid transparent; border-top: 60px solid #ff4d6d; }
+      .wish { font-size: 1.2em; }
+    }
+  </style> 
+ </head> 
+ <body> <!-- Envelope Animation --> 
+  <div class="envelope-container" onclick="openEnvelope()"> 
+   <div class="envelope" id="envelope"> 
+    <div class="flap"></div> 
+    <div class="card"> 
+     <div class="wish">
+       Happy Birthday, My Blushy Tomato! You’re My Forever Love! 💖 
+     </div> 
+    </div> 
+   </div> 
+  </div> <!-- Main Content --> 
+  <div class="main-content" id="mainContent"> 
+   <h1>Happy Birthday, My Wifiee, Madam Ji, Blushy Tomato! 🎂</h1> 
+   <h2>From Your Sirji 💖</h2> <button onclick="showSurprise()">✨ Tap to Reveal the Surprise ✨</button> 
+   <div class="message hidden" id="surpriseMessage"> 
+    <img src="https://i.imgur.com/bpuvEU2.jpeg" alt="Madam Ji and Sirji" class="photo"> 
+    <br> Madam Ji 🎀, 
+    <br> 
+    <br> 
+    <div class="message-line">
+      You are my heart’s home, my forever spark, my Blushy Tomato who lights up my world 🌟. 
+    </div> 
+    <div class="message-line">
+      Every laugh we share, every quiet moment, every dream we chase together — they’re the threads of a love I never knew could exist 💞. 
+    </div> 
+    <div class="message-line">
+      You make every day feel like a gift, wrapping me in warmth and joy I can’t explain, only feel 🥰. 
+    </div> 
+    <div class="message-line">
+      Thank you for choosing me, for being my partner, my muse, my everything — I’m yours in every lifetime 💍. 
+    </div> 
+    <div class="message-line">
+      Happy Birthday, my love! May your day overflow with magic, love, and all the sweetness you bring to me 🎉🎂💐. 
+    </div> 
+    <br> Forever and always, 
+    <br> Your Sirji 💌 
+   </div> 
+  </div> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.min.js"></script> 
+  <script>
+    function openEnvelope() {
+      const envelope = document.getElementById('envelope');
+      const mainContent = document.getElementById('mainContent');
+      envelope.classList.add('open');
+      setTimeout(() => {
+        envelope.style.display = 'none';
+        mainContent.classList.add('show');
+      }, 1000); // Show main content after animation completes
+    }
+
+    function showSurprise() {
+      const message = document.getElementById('surpriseMessage');
+      message.classList.remove('hidden');
+
+      // Hide the button after clicking
+      document.querySelector('button').style.display = 'none';
+
+      // Trigger confetti with fallback
+      try {
+        if (typeof confetti === 'function') {
+          confetti({
+            particleCount: 80,
+            spread: 60,
+            origin: { y: 0.6 }
+          });
+        } else {
+          console.log('Confetti library not loaded, skipping animation.');
+        }
+      } catch (e) {
+        console.log('Error with confetti: ' + e.message);
+      }
+
+      // Create floating hearts
+      for (let i = 0; i < 8; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDelay = Math.random() * 2 + 's';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+      }
+    }
+  </script> 
+ </body>
+</html>
